@@ -28,8 +28,7 @@ export default function Home() {
               key={project.id}
               className="rounded-2xl border border-slate-800/60 bg-slate-900/70 p-4"
               initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1, duration: 0.6, ease: "easeOut" }}
             >
               <p className="text-sm uppercase tracking-wide text-primary">{project.category}</p>
@@ -44,8 +43,7 @@ export default function Home() {
         <motion.div
           className="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-8"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-2xl font-semibold text-slate-100">
@@ -66,8 +64,7 @@ export default function Home() {
         <motion.div
           className="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-8"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <h2 className="text-2xl font-semibold text-slate-100">

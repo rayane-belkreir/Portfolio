@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { FiGrid, FiLayers, FiChevronRight } from "react-icons/fi";
+import { FiGrid, FiChevronRight } from "react-icons/fi";
 import ProjectModal from "./ProjectModal";
 import SectionHeading from "./SectionHeading";
 import { projectCategories, projects } from "../data/projects";
@@ -68,75 +68,117 @@ export default function Projects() {
         variants={listVariants}
         initial="hidden"
         animate="visible"
-        className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-800/70 bg-gradient-to-br from-slate-950/85 via-slate-950/70 to-slate-900/70 shadow-[0_30px_80px_rgba(76,87,255,0.16)]"
+        className="relative mx-auto w-full max-w-5xl rounded-3xl border border-slate-800/70 bg-gradient-to-br from-slate-950/85 via-slate-950/70 to-slate-900/70 shadow-[0_30px_80px_rgba(76,87,255,0.16)]"
       >
-        <table className="w-full table-fixed border-collapse text-left">
-          <thead className="bg-slate-900/85 text-[11px] uppercase tracking-[0.3em] text-slate-400">
-            <tr>
-              <th className="border-r border-slate-800/45 px-8 py-5">Projet</th>
-              <th className="border-r border-slate-800/45 px-8 py-5">Description</th>
-              <th className="border-r border-slate-800/45 px-8 py-5 text-center">Compétences clés</th>
-              <th className="px-8 py-5 text-center">Aperçu</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProjects.map((project, index) => (
-              <motion.tr
-                key={project.id}
-                layout
-                whileHover={{ scale: 1.01, translateY: -2 }}
-                className="border-t border-slate-800/45 bg-transparent transition-colors duration-300 hover:bg-slate-900/60"
-              >
-                <td className="border-r border-slate-800/45 px-8 py-6 align-middle">
-                  <div className="flex flex-col items-center gap-3 text-center">
-                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/45 via-primary/25 to-primary/10 text-[13px] font-semibold tracking-[0.18em] text-white shadow-[0_15px_32px_rgba(76,87,255,0.3)]">
-                      <span className="relative z-10 leading-none">{String(index + 1).padStart(2, "0")}</span>
-                      <span className="pointer-events-none absolute inset-0 rounded-full border border-primary/65" />
-                      <span className="pointer-events-none absolute inset-0 rounded-full blur-md bg-primary/20 opacity-80" />
-                    </div>
-                    <div className="space-y-1">
-                      <span className="block text-[9px] uppercase tracking-[0.45em] text-primary/75">{project.category}</span>
-                      <h3 className="text-[14px] font-semibold text-white">
-                        <span className="block max-w-[175px] leading-tight">{project.title}</span>
-                      </h3>
-                    </div>
-                  </div>
-                </td>
-                <td className="border-r border-slate-800/45 px-8 py-6 align-middle">
-                  <p className="mx-auto max-w-[320px] text-sm leading-relaxed text-slate-300">
-                    {project.fullDescription ?? project.description}
+        <div className="space-y-4 p-6 md:hidden">
+          {filteredProjects.map((project, index) => (
+            <article
+              key={project.id}
+              className="space-y-4 rounded-3xl border border-slate-800/60 bg-slate-900/75 p-6 text-sm text-slate-200 shadow-xl"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-primary/70">
+                    {project.category}
                   </p>
-                </td>
-                <td className="border-r border-slate-800/45 px-8 py-6 align-middle">
-                  <div className="flex h-full items-center justify-center">
-                    <div className="flex max-w-[220px] flex-wrap items-center justify-center gap-2 text-center">
-                      {project.tools.map((tool) => (
-                        <span
-                          key={tool}
-                          className="rounded-full border border-primary/35 bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary"
-                        >
-                          {tool}
-                        </span>
-                      ))}
+                  <h3 className="mt-2 text-lg font-semibold text-white">{project.title}</h3>
+                </div>
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <p className="text-slate-300">{project.fullDescription ?? project.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {project.tools.map((tool) => (
+                  <span
+                    key={tool}
+                    className="rounded-full border border-primary/35 bg-primary/10 px-3 py-1 text-[11px] font-medium text-primary"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+              <motion.button
+                onClick={() => setSelectedProject(project)}
+                whileTap={{ scale: 0.96 }}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary/90 px-6 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-primary"
+              >
+                Voir la galerie
+                <FiChevronRight />
+              </motion.button>
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full table-fixed border-collapse text-left">
+            <thead className="bg-slate-900/85 text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              <tr>
+                <th className="border-r border-slate-800/45 px-8 py-5">Projet</th>
+                <th className="border-r border-slate-800/45 px-8 py-5">Description</th>
+                <th className="border-r border-slate-800/45 px-8 py-5 text-center">Compétences clés</th>
+                <th className="px-8 py-5 text-center">Aperçu</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProjects.map((project, index) => (
+                <motion.tr
+                  key={project.id}
+                  layout
+                  whileHover={{ scale: 1.01, translateY: -2 }}
+                  className="border-t border-slate-800/45 bg-transparent transition-colors duration-300 hover:bg-slate-900/60"
+                >
+                  <td className="border-r border-slate-800/45 px-8 py-6 align-middle">
+                    <div className="flex flex-col items-center gap-3 text-center">
+                      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/45 via-primary/25 to-primary/10 text-[13px] font-semibold tracking-[0.18em] text-white shadow-[0_15px_32px_rgba(76,87,255,0.3)]">
+                        <span className="relative z-10 leading-none">{String(index + 1).padStart(2, "0")}</span>
+                        <span className="pointer-events-none absolute inset-0 rounded-full border border-primary/65" />
+                        <span className="pointer-events-none absolute inset-0 rounded-full blur-md bg-primary/20 opacity-80" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="block text-[9px] uppercase tracking-[0.45em] text-primary/75">{project.category}</span>
+                        <h3 className="text-[14px] font-semibold text-white">
+                          <span className="block max-w-[175px] leading-tight">{project.title}</span>
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="px-8 py-6 align-middle">
-                  <div className="flex justify-center">
-                    <motion.button
-                      onClick={() => setSelectedProject(project)}
-                      whileTap={{ scale: 0.94 }}
-                      className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary/90 px-6 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-primary"
-                    >
-                      Voir
-                      <FiChevronRight className="transition-transform group-hover:translate-x-1" />
-                    </motion.button>
-                  </div>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
+                  </td>
+                  <td className="border-r border-slate-800/45 px-8 py-6 align-middle">
+                    <p className="mx-auto max-w-[320px] text-sm leading-relaxed text-slate-300">
+                      {project.fullDescription ?? project.description}
+                    </p>
+                  </td>
+                  <td className="border-r border-slate-800/45 px-8 py-6 align-middle">
+                    <div className="flex h-full items-center justify-center">
+                      <div className="flex max-w-[220px] flex-wrap items-center justify-center gap-2 text-center">
+                        {project.tools.map((tool) => (
+                          <span
+                            key={tool}
+                            className="rounded-full border border-primary/35 bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary"
+                          >
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6 align-middle">
+                    <div className="flex justify-center">
+                      <motion.button
+                        onClick={() => setSelectedProject(project)}
+                        whileTap={{ scale: 0.94 }}
+                        className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary/90 px-6 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-primary"
+                      >
+                        Voir
+                        <FiChevronRight className="transition-transform group-hover:translate-x-1" />
+                      </motion.button>
+                    </div>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </motion.div>
 
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
