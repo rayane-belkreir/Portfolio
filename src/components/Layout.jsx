@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 import ScrollToTop from "./ScrollToTop";
@@ -27,18 +27,15 @@ export default function Layout() {
     <div className="min-h-screen bg-[#050810] text-slate-100">
       <ScrollToTop />
       <Navigation />
-      <AnimatePresence mode="wait">
-        <motion.main
-          key={location.pathname}
-          variants={pageVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-16 px-6 pb-24 pt-40 md:px-10 lg:px-16"
-        >
-          <Outlet />
-        </motion.main>
-      </AnimatePresence>
+      <motion.main
+        key={location.pathname}
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-16 px-6 pb-24 pt-40 md:px-10 lg:px-16"
+      >
+        <Outlet />
+      </motion.main>
       <Footer />
     </div>
   );
